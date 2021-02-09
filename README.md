@@ -11,6 +11,6 @@ Characters | ASCII | Frequency | HUFFMAN | bits
 'o' | 111 | 1 | 10 | 01101111 
 
 This is an image illustrating how huffman ccoding works 
-![huffman coding](/img/huffman)
+![huffman coding](/img/huffman.png)
 
 And here's the code for Huffman Coding [compressor and decompressor](/huffman)
