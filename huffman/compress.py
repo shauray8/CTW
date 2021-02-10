@@ -1,15 +1,11 @@
-#enwik4 : 100326 bits
+#enwik4 : 100326 bytes
+#Huffman Coding : 53967 bytes
 
 import os
+import sys
 import collections
 from queue import PriorityQueue
-
-with open("../enwik4",'r') as f:
-    data = f.read()
-
-freq = collections.Counter(data)
-
-q = PriorityQueue()
+import pickle
 
 class Node(object):
     ''' This class represents a node in the binary tree '''
@@ -26,16 +22,16 @@ class Node(object):
         ''' Sorting criterion for inserting to priority queue '''
         return (self.freq < other.freq)
 
-    def __eq__(self, other):
-        if not isinstance(self, other.__class__):
-            return False
-        return self.char == other.char and self.freq == other.freq
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
     def __str__(self):
         return '({}: {})'.format(self.char, self.freq)
+
+with open(sys.argv[1],'r') as f:
+    data = f.read()
+
+freq = collections.Counter(data)
+
+q = PriorityQueue()
+
 
 for k,v in freq.items():
     n = Node(k, v)
@@ -48,7 +44,7 @@ while q.qsize() > 1:
     q.put((new_node.freq, new_node))
 
 root = q.get()[1]
-#print(root)
+print(root)
 
 
 code = []
@@ -71,10 +67,10 @@ def assign(root, codes, code):
 
 assign(root, codes, code)
 
-
 compressed_data = []
 for d in data:
     compressed_data.append(codes[d])
+
 encoded = "".join(compressed_data)
 
 extra = 8 - len(encoded) % 8
@@ -86,9 +82,9 @@ b = bytearray()
 length = len(padded_encoded)
 for i in range(0, length, 8):
     byte = padded_encoded[i:i+8]
-    b.append(int(byte, 2))
+    b.append(int(byte,2))
+print(len(b))
 
-import pickle
-with open("./try","wb") as out:
+with open(sys.argv[1]+" compressed","wb") as out:
     pickle.dump((freq, b), out)
 
