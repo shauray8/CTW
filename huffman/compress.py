@@ -19,12 +19,23 @@ class Node(object):
         self.left = left
         self.right = right
 
+    def is_leaf(self):
+        return self.left is None and self.right is None
+
     def __lt__(self, other):
         ''' Sorting criterion for inserting to priority queue '''
         return (self.freq < other.freq)
 
+    def __eq__(self, other):
+        if not isinstance(self, other.__class__):
+            return False
+        return self.char == other.char and self.freq == other.freq
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __str__(self):
-        return f'({self.char}: {self.freq})'
+        return '({}: {})'.format(self.char, self.freq)
 
 for k,v in freq.items():
     n = Node(k, v)
@@ -37,7 +48,47 @@ while q.qsize() > 1:
     q.put((new_node.freq, new_node))
 
 root = q.get()[1]
-print(root)
+#print(root)
 
 
+code = []
+codes = {}
+def assign(root, codes, code):
+    if root.is_leaf():
+        key = root.char
+        codes[key] = ''.join(code)
+        return
+
+    if root.left:
+        code.append('0')
+        assign(root.left, codes, code)
+        code.pop()
+
+    if root.right:
+        code.append('1')
+        assign(root.right, codes, code)
+        code.pop()
+
+assign(root, codes, code)
+
+
+compressed_data = []
+for d in data:
+    compressed_data.append(codes[d])
+encoded = "".join(compressed_data)
+
+extra = 8 - len(encoded) % 8
+padded_encoded = '0' * extra + encoded
+extra_zero = '{0:08b}'.format(extra)
+padded_encoded = extra_zero + padded_encoded
+
+b = bytearray()
+length = len(padded_encoded)
+for i in range(0, length, 8):
+    byte = padded_encoded[i:i+8]
+    b.append(int(byte, 2))
+
+import pickle
+with open("./try","wb") as out:
+    pickle.dump((freq, b), out)
 
