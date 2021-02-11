@@ -30,12 +30,12 @@ with open(sys.argv[1],'r') as f:
 
 freq = collections.Counter(data)
 
+
 q = PriorityQueue()
-
-
 for k,v in freq.items():
     n = Node(k, v)
     q.put((n.freq, n))
+
 
 while q.qsize() > 1:
     left = q.get()[1]
@@ -85,6 +85,6 @@ for i in range(0, length, 8):
     b.append(int(byte,2))
 print(len(b))
 
-with open(sys.argv[1]+" compressed","wb") as out:
+with open("compressed_file","wb") as out:
     pickle.dump((freq, b), out)
 
