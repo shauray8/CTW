@@ -14,7 +14,7 @@ def run(fn = "enwik4"):
     bg = bitgen(enw)
     SYMBOLS = 2
 
-#    enc = Coder()
+    enc = Coder()
 #    ctw = CTW(context_length=16)
 
 #    H = 0.0
