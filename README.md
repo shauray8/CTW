@@ -1,6 +1,8 @@
 # Context Tree Weighting
 investigating and exploring context-tree weighting
 
+# Huffman Coding just to create a baseline
+
 ### An example of how huffman coding works 
 
 Characters | ASCII | Frequency | HUFFMAN | bits
@@ -10,7 +12,24 @@ Characters | ASCII | Frequency | HUFFMAN | bits
 'i' | 108 | 1 | 11 | 01101100 
 'o' | 111 | 1 | 10 | 01101111 
 
-### This is an image illustrating how huffman ccoding works (source: WIKI)
+### This is an image illustrating how huffman coding works (source: WIKI)
 ![huffman coding](/img/huffman.png)
 
 And here's the code for Huffman Coding [compressor and decompressor](/huffman)
+
+### Results for the compression are 
+algorithms | size(bytes)
+-----------|-------------
+ORIGINAL | 100326
+GZIP | 26780
+HUFFMAN | 53967
+7ZIP | 23806
+
+
+### Applications
+---
+A demonstration of using this compression tool to study mammalian evolution and construct the phylogeny of the SARS virus can be found [here](https://docs.google.com/presentation/d/1LUbo-6mLpYTwcELOLlRR4ohku9j2kCiQj_2sYPh0uWA/edit#slide=id.p).
+
+### BARF this thing compresses your data to less than 1 byte (i don't know how)
+---
+The Barf Thingy can be found [here](http://mattmahoney.net/dc/barf.html).
