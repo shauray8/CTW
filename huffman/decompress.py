@@ -4,7 +4,7 @@ from queue import PriorityQueue
 from compress import Node
 from operator import attrgetter
 
-with open("compressed_file",'rb') as f:
+with open("huffman_compressed_file",'rb') as f:
     data = pickle.load(f)
     
 frequency, bytes = data
@@ -20,14 +20,13 @@ def build_tree(nodes):
     right = build_tree(nodes[index:])
     return Node('', left.freq + right.freq, left, right)
 
-def create_nodes_from_frequencies(frequencies):
+def nodes_from_frequencies(frequencies):
     nodes = []
-    for k, v in frequencies.items():
-        nodes.append(Node(k, v))
-    nodes.sort(key=attrgetter('freq', 'char'), reverse=True)
+    for a, b in frequencies.items():
+        nodes.append(Node(a, b))
     return nodes
 
-nodes = create_nodes_from_frequencies(frequency)
+nodes = nodes_from_frequencies(frequency)
 
 def split(nodes):
     length = len(nodes)
@@ -38,14 +37,13 @@ def split(nodes):
     while (index >= 0) and (second_half_total < (total - second_half_total)):
         index -= 1
         second_half_total += nodes[index].freq
-
     diff1 = second_half_total - (total - second_half_total)
     diff2 = abs(diff1 - 2 * nodes[index].freq)
     if diff2 < diff1:
         index += 1
     return index
 
-def convert_bytes_to_bit_str(byte_array):
+def convert_bytes_to_bit(byte_array):
     bin_format = '{0:08b}'
     bit_data = []
     for b in byte_array:
@@ -60,27 +58,28 @@ def remove_padding(padded_encoded_str):
     encoded_str = padded_encoded_str[extra_zero:]
     return encoded_str
 
-def get_decoded_str(root, encoded_str):
+def the_decoded_product(root, encoded_str):
     decoded_data = []
-    current = root
+    active_node = root
     for code in encoded_str:
         if code == "0":
-            current = current.left
-        else:
-            current = current.right
+            active_node = active_node.left
+        elif code == "1":
+            active_node = active_node.right
 
-        if current.is_leaf():
-            char = current.char
+        if active_node.is_leaf():
+            char = active_node.char
             decoded_data.append(char)
-            current = root
+            active_node = root
     return ''.join(decoded_data)
 
-root = build_tree(nodes)
-bit_str = convert_bytes_to_bit_str(bytes)
-encoded_str = remove_padding(bit_str)
-decoded_str = get_decoded_str(root, encoded_str)
-
-with open("output_file", 'w') as out:
-    out.write(decoded_str)
-
+if __name__ == "__main__":
+    root = build_tree(nodes)
+    bit_str = convert_bytes_to_bit(bytes)
+    encoded_str = remove_padding(bit_str)
+    decoded_str = the_decoded_product(root, encoded_str)
+    
+    with open("output_file", 'w') as out:
+        out.write(decoded_str)
+    
 

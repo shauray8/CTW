@@ -13,20 +13,20 @@ def run(fn = "enwik4"):
     enw = open(fn, "rb").read()
     bg = bitgen(enw)
     SYMBOLS = 2
-    enc = Coder()
-    ctw = CTW(context_length=16)
 
-    H = 0.0
-    cnt = 0
-    stream = []
-    try:
-        while 1:
-            cnt += 1
+#    enc = Coder()
+#    ctw = CTW(context_length=16)
 
-            p_s = []
-            for s in range(SYMBOLS):
-                p_s.append(math.exp(ctw.log_prob(s)))
-            assert (sum(p_s)-1.0) < 1e-6
+#    H = 0.0
+#    cnt = 0
+#    stream = []
+#    try:
+#        while 1:
+#            cnt += 1
+#
+#            p_s = []
+#            for s in range(SYMBOLS):
+#                p_s.append(math.exp(ctw.log_prob(s)))
+#            assert (sum(p_s)-1.0) < 1e-6
 
 
-run()
