@@ -1,8 +1,9 @@
 import torch
-import math
 import numpy
+
 import torch.nn as nn
 from torchvision import transforms, datasets
+import torch.optim as optim
 
 transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
@@ -20,7 +21,7 @@ dataset_loader = torch.utils.data.DataLoader(dataset,
 class encoder(nn.Module):
     def __init__(self):
         super(encoder, self).__init__()
-        self.conv1 = nn.Conv2d(1,64, kernel_size=5, stride=2)
+        self.conv1 = nn.Conv2d(28*28,64, kernel_size=5, stride=2)
         self.act = nn.ReLU()
         pass
     def forward(self, x):
@@ -33,10 +34,14 @@ class encoder(nn.Module):
 class decoder(nn.Module):
     def __init__(self):
         super(decoder, self).__init__()
+        self.conv1 = nn.Conv2d(64, 128, kernel_size=5, stride=2)
+        self.act = nn.ReLU()
         pass
 
 
     def forward(self, x):
+        x = self.conv1(x)
+        x = self.act(x)
         pass
 
 class resnet(nn.Module):
@@ -50,9 +55,16 @@ class resnet(nn.Module):
 
 EPOCH = 50
 encoder = encoder()
+decoder = decoder()
 print(encoder)
-for epoch in range(EPOCH):
-    pass
+print(decoder)
+
+def train():
+    for epoch in range(EPOCH):
+        for id, (images,_) in enumerate(dataset_loader):
+            images = images.to('cuda')
+            pass
+        pass
 
 
 # the basic structure for the autoencoder 
