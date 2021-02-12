@@ -36,10 +36,10 @@ The Barf Thingy can be found [here](http://mattmahoney.net/dc/barf.html).
 
 ### References
 ---
-*[An Autoencoder-based Learned Image Compressor: Description of Challenge Proposal by NCTU](https://arxiv.org/pdf/1902.07385.pdf)
-*[Text Encryption with Huffman Compression](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.258.8140&rep=rep1&type=pdf)
-*[The context-tree weighting method: basic properties](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.352&rep=rep1&type=pdf)
-*[Context Tree Switching](https://arxiv.org/pdf/1111.3182.pdf)
+* [An Autoencoder-based Learned Image Compressor: Description of Challenge Proposal by NCTU](https://arxiv.org/pdf/1902.07385.pdf)
+* [Text Encryption with Huffman Compression](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.258.8140&rep=rep1&type=pdf)
+* [The context-tree weighting method: basic properties](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.352&rep=rep1&type=pdf)
+* [Context Tree Switching](https://arxiv.org/pdf/1111.3182.pdf)
 
 ### TO DO
 * try autoencoder
