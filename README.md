@@ -33,3 +33,9 @@ A demonstration of using this compression tool to study mammalian evolution and 
 ### BARF this thing compresses your data to less than 1 byte (i don't know how)
 ---
 The Barf Thingy can be found [here](http://mattmahoney.net/dc/barf.html).
+
+### TO DO
+* try autoencoder
+* write CTW
+* add applications
+* explore BARF
