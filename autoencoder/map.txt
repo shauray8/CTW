@@ -1,0 +1,45 @@
+the deep learning architecture, the generation of importance map, the quantization and arthematic coder in the system1 !
+
+the network architecture
+---
+input -> H x W --> RGB
+
+the encoder block -->
+kernel = 5
+channels = 64
+stride = 2
+
+all layers are liner convolutions
+normalization --> [-1,1] or [0,1] not confirm
+
+
+and the decoder goes in the inverse direction !!
+
+the encoder results -->
+gives z --> feature maps
+
+the quantizer
+---
+input -> z --> feature maps
+
+giver q = Q(z)
+
+the importance net 
+---
+input --> z
+imp = I(z)
+
+then we have Z' = q x imp
+
+The decoder takes Z' as input 
+X' = D(Z')
+
+
+denormalization --> [0,255]
+
+
+q(quantizer) = Q(z) = [z x 2^d] --> this is floor function
+where d in first 4 bits if the normalized pixel
+ 
+
+
