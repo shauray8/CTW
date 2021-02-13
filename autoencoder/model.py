@@ -2,12 +2,11 @@ import torch
 import numpy
 
 import torch.nn as nn
-from torchvision import transforms, datasets
+from torchvision import transforms, datasets, models
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
 transform = transforms.Compose([
-        transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.5],
                              std=[0.5])
@@ -19,31 +18,57 @@ dataset = datasets.MNIST(root='./data',transform=transform, download=True)
 dataset_loader = torch.utils.data.DataLoader(dataset,
                                              batch_size=batch_size, shuffle=True,)
 
-class encoder(nn.Module):
+#resnet = models.segmentation.fcn_resnet101(pretrained=False, progress=True, num_classes=21)
+
+class autoencoder_compression(nn.Module):
     def __init__(self, input, channels):
-        super(encoder, self).__init__()
-        self.conv1 = nn.Conv2d(input,channels, kernel_size=5, stride=2)
-        self.act = nn.ReLU()
-        pass
-    def forward(self, x):
-        x = self.conv1(x)
-        x = self.act(x)
-        x = self.conv1(x)
-        x = self.act(x)
-        pass
+        super(autoencoder_compression, self).__init__()
+        
+        #ENCODER
 
-class decoder(nn.Module):
-    def __init__(self):
-        super(decoder, self).__init__()
-        self.conv1 = nn.Conv2d(64, 128, kernel_size=5, stride=2)
-        self.act = nn.ReLU()
-        pass
+        resnet_E = models.resnet18(pretrained=True)
+        self.conv1_E = nn.Conv2d(input,channels, kernel_size=5, stride=2)
+        self.act_E = nn.ReLU()
+        modules_E = list(resnet_E.children())[:-1]
+        self.resnet_E = nn.Sequential(*modules_E)
+        self.conv2_E = nn.Conv2d(resnet_E.fc.in_features,16, kernel_size=5, stride=2)
 
+        #DECODER
 
-    def forward(self, x):
-        x = self.conv1(x)
-        x = self.act(x)
-        pass
+        self.conv1_D = nn.Conv2d(16, 128, kernel_size=5, stride=2)
+        self.act_D = nn.ReLU()
+        resnet_D = models.resnet18(pretrained=True)
+        modules_D = list(resnet_D.children())[:-1]
+        self.resnet_D = nn.Sequential(*modules_D)
+        self.conv2_D = nn.Conv2d(resnet_D.fc.in_features, 64, kernel_size=5, stride=2)
+        self.act2_D = nn.ReLU()
+        self.conv3_D = nn.Conv2d(64, 1, kernel_size=5, stride=2)
+        
+
+    def decode(self, x):
+        x = self.conv1_D(x)
+        x = self.act_D(x)
+        for i in range(6):
+            x = self.resnet_D(x)
+        x = self.conv2_D(x)
+        x = self.act2_D(x)
+        x = self.conv3_D(x)
+        return x
+        
+    def encode(self, x):
+        for i in range(2):
+            x = self.conv1_E(x)
+            x = self.act_E(x)
+        for i in range(6):
+            x = self.resnet_E(x)
+        x = self.conv2_E(x)
+        return x
+
+    def forward(self, z):
+        z = self.encode(z)
+        z = self.decode(z)
+        return z
+
 
 class resnet(nn.Module):
     def __init__(self):
@@ -53,24 +78,32 @@ class resnet(nn.Module):
         pass
 
     #because i think that i will need one lets see
+    #should i just use a pretrainied model or should i train this sucker
 
 EPOCH = 50
 input = 1
 channels = 64
-encoder = encoder(input, channels)
-decoder = decoder()
-print(encoder)
-print(decoder)
+
+net = autoencoder_compression(input, channels)
+
+optimizer = optim.Adam(net.parameters())
+loss_function = nn.MSELoss()
+
+print(net)
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def train():
-    for epoch in range(EPOCH):
+    for epoch in (i := range(EPOCH)):
         for id, (images,_) in enumerate(dataset_loader):
-            #images = images.to(device)
-            plt.imshow(images[0].view(28,28), cmap="gray")
-            plt.show()
-            print("done bitches")
-            break 
+            x = images.to(device)
+            x_output = net(x).reshape(-1)
+            loss = loss_function(x_output,x.data)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            break
+        i.set_description(f'epoch [{epoch + 1}/{epochs}], loss:{loss.item():.4f}')
         break
 
 train()

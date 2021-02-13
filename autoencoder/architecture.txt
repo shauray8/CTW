@@ -43,3 +43,18 @@ where d in first 4 bits if the normalized pixel
  
 
 
+overview -->
+
+###encoder
+image -> (input) -> Normalize -> conv2d -> relu -> conv2d -> relu ->
+15 res blocks and 5 skips -> res block -> skip -> conv2d -> z -> 
+
+--> quantizer and importance net -> masking -> binary arithamatic code ->
+
+### decoder
+binary arithematic decode -> conv2d -> relu -> 15 res blocks and 5 skip ->
+res block and 1 skip -> conv2d -> relu -> conv2d -> Denormalize -> output
+
+
+
+
