@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 
 transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5],
-                             std=[0.5])
+        transforms.Normalize(mean=[0.5,0.5,0.5],
+                             std=[0.5,0.5,0.5])
 ])
 
 batch_size=32
@@ -107,4 +107,5 @@ def train():
         break
 
 train()
+
 # the basic structure for the autoencoder 
