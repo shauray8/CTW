@@ -114,4 +114,3 @@ def train():
         break
 
 train()
-# the basic structure for the autoencoder 
