@@ -14,7 +14,7 @@ transform = transforms.Compose([
         transforms.Normalize(mean=[0.5,0.5,0.5],
                              std=[0.5, 0.5, 0.5])
 ])
-batch_size=32
+batch_size= 64
 
 dataset = datasets.MNIST(root='./data',transform=transform, download=True)
 dataset_loader = torch.utils.data.DataLoader(dataset,
