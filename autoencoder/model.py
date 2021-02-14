@@ -6,18 +6,23 @@ from torchvision import transforms, datasets, models
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
-transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5,0.5,0.5],
-                             std=[0.5,0.5,0.5])
-])
 
+transform = transforms.Compose([
+        transforms.RandomSizedCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
+])
 batch_size=32
 
-dataset = datasets.MNIST(root='./data',transform=transform, download=True)
+#dataset = datasets.MNIST(root='./data',transform=transform, download=True)
+#dataset_loader = torch.utils.data.DataLoader(dataset,
+#                                             batch_size=batch_size, shuffle=True,)
+
+dataset = datasets.ImageFolder(root='../../data/Cat',transform=transform)
 dataset_loader = torch.utils.data.DataLoader(dataset,
                                              batch_size=batch_size, shuffle=True,)
-
 #resnet = models.segmentation.fcn_resnet101(pretrained=False, progress=True, num_classes=21)
 
 class autoencoder_compression(nn.Module):
@@ -56,7 +61,7 @@ class autoencoder_compression(nn.Module):
         return x
         
     def encode(self, x):
-        for i in range(2):
+        for i in range(1):
             x = self.conv1_E(x)
             x = self.act_E(x)
         for i in range(6):
@@ -81,7 +86,7 @@ class resnet(nn.Module):
     #should i just use a pretrainied model or should i train this sucker
 
 EPOCH = 50
-input = 1
+input = 3 
 channels = 64
 
 net = autoencoder_compression(input, channels)
@@ -97,7 +102,7 @@ def train():
     for epoch in (i := range(EPOCH)):
         for id, (images,_) in enumerate(dataset_loader):
             x = images.to(device)
-            x_output = net(x).reshape(-1)
+            x_output = net(x)
             loss = loss_function(x_output,x.data)
             optimizer.zero_grad()
             loss.backward()
@@ -107,5 +112,4 @@ def train():
         break
 
 train()
-
 # the basic structure for the autoencoder 
