@@ -11,18 +11,18 @@ transform = transforms.Compose([
         transforms.RandomSizedCrop(224),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                             std=[0.229, 0.224, 0.225])
+        transforms.Normalize(mean=[0.5,0.5,0.5],
+                             std=[0.5, 0.5, 0.5])
 ])
 batch_size=32
 
-#dataset = datasets.MNIST(root='./data',transform=transform, download=True)
-#dataset_loader = torch.utils.data.DataLoader(dataset,
-#                                             batch_size=batch_size, shuffle=True,)
-
-dataset = datasets.ImageFolder(root='../../data/Cat',transform=transform)
+dataset = datasets.MNIST(root='./data',transform=transform, download=True)
 dataset_loader = torch.utils.data.DataLoader(dataset,
                                              batch_size=batch_size, shuffle=True,)
+
+#dataset = datasets.ImageFolder(root='../../data/Cat',transform=transform)
+#dataset_loader = torch.utils.data.DataLoader(dataset,
+#                                             batch_size=batch_size, shuffle=True,)
 #resnet = models.segmentation.fcn_resnet101(pretrained=False, progress=True, num_classes=21)
 
 class autoencoder_compression(nn.Module):
@@ -58,6 +58,7 @@ class autoencoder_compression(nn.Module):
         x = self.conv2_D(x)
         x = self.act2_D(x)
         x = self.conv3_D(x)
+        x = resnet_D(x)
         return x
         
     def encode(self, x):
@@ -67,6 +68,7 @@ class autoencoder_compression(nn.Module):
         for i in range(6):
             x = self.resnet_E(x)
         x = self.conv2_E(x)
+        x = self.resnet_E(x)
         return x
 
     def forward(self, z):
@@ -86,7 +88,7 @@ class resnet(nn.Module):
     #should i just use a pretrainied model or should i train this sucker
 
 EPOCH = 50
-input = 3 
+input = 1
 channels = 64
 
 net = autoencoder_compression(input, channels)
