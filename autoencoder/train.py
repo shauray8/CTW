@@ -32,10 +32,8 @@ dec = Decoder(input_nc, output_nc).to(device)
 enc.load_state_dict(torch.load("pretrained/enc.pth"))
 dec.load_state_dict(torch.load("pretrained/dec.pth"))
 
-enc_optimize = optim.Adam(enc.parameters())
 dec_optimize = optim.Adam(dec.parameters())
 
-loss_functionE = nn.MSELoss()
 loss_functionD = nn.MSELoss()
 
 losses = []
