@@ -29,6 +29,9 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 enc = Encoder(input_nc, output_nc).to(device)
 dec = Decoder(input_nc, output_nc).to(device)
 
+enc.load_state_dict(torch.load("pretrained/enc.pth"))
+dec.load_state_dict(torch.load("pretrained/dec.pth"))
+
 enc_optimize = optim.Adam(enc.parameters())
 dec_optimize = optim.Adam(dec.parameters())
 
@@ -37,7 +40,7 @@ loss_functionD = nn.MSELoss()
 
 losses = []
 def train():
-    for epoch in (i := trange(EPOCH)):
+    for epoch in (i := trange(15, EPOCH)):
         for id, (images,_) in enumerate(dataset_loader):
             x = images.to(device)
             ##### training the Encoder #####
@@ -56,12 +59,11 @@ def train():
             dec_optimize.zero_grad()
             loss_D.backward()
             dec_optimize.step()
-            losses.append(loss_D.item())
+            if id % 100:
+                losses.append(loss_D.item())
             i.set_description(f'epoch [{epoch + 1}/{EPOCH}], loss:{loss_D.item():.4f}')
 
         torch.save(dec.state_dict(), 'pretrained/dec.pth')
         torch.save(enc.state_dict(), 'pretrained/enc.pth')
-        plt.plot(losses)
-        plt.show()
 
 train()
