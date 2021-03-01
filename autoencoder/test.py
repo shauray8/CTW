@@ -21,12 +21,12 @@ transform = transforms.Compose([
 
 dataset = datasets.MNIST(root='./data',transform=transform, download=True, train=False)
 dataset_loader = torch.utils.data.DataLoader(dataset,
-                                             batch_size=1, shuffle=True,)
+                                             batch_size=64, shuffle=True,)
 
 for i,(image, _) in enumerate(dataset_loader):
     encoded = enc(image)
     decoded = dec(encoded)
-    encoded = encoded.view(1,4,8)
+    encoded = encoded.view(64,1,4,8)
     save_image(image, "output/A_orig.png")
     save_image(encoded, "output/A_encoded.png")
     save_image(decoded, "output/A_decoded.png")

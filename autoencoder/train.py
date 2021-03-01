@@ -40,7 +40,7 @@ loss_functionD = nn.MSELoss()
 
 losses = []
 def train():
-    for epoch in (i := trange(15, EPOCH)):
+    for epoch in (i := trange(0, EPOCH)):
         for id, (images,_) in enumerate(dataset_loader):
             x = images.to(device)
             ##### training the Encoder #####
@@ -59,8 +59,6 @@ def train():
             dec_optimize.zero_grad()
             loss_D.backward()
             dec_optimize.step()
-            if id % 100:
-                losses.append(loss_D.item())
             i.set_description(f'epoch [{epoch + 1}/{EPOCH}], loss:{loss_D.item():.4f}')
 
         torch.save(dec.state_dict(), 'pretrained/dec.pth')
