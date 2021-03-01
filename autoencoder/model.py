@@ -5,68 +5,72 @@ import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
-class resnet(nn.Module):
-    def __init__(self):
-        super(resnet).__init__()
-        pass
-    def forward(self, x):
-        pass
+class Residual_block(nn.Module):
+    def __init__(self, input_nc):
+        super(Residual_block, self).__init__()
 
-class autoencoder_compression(nn.Module):
-    def __init__(self, input, channels):
-        super(autoencoder_compression, self).__init__()
-        
-        #ENCODER
+        model = [nn.Conv2d(input_nc, input_nc, kernel_size=3, stride=1, padding=1, bias=False),
+                nn.InstanceNorm2d(input_nc, affine=True, track_running_stats=True),
+                nn.ReLU(inplace=False),
+                nn.Conv2d(input_nc, input_nc, kernel_size =3, stride=1, padding=1, bias=False),
+                nn.InstanceNorm2d(input_nc, affine=True, track_running_stats=True)]
 
-        resnet_E = models.resnet18(pretrained=True)
-        self.conv1_E = nn.Conv2d(input,channels, kernel_size=5, stride=2)
-        self.act_E = nn.ReLU()
-        modules_E = list(resnet_E.children())[:-1]
-        self.resnet_E = nn.Sequential(*modules_E)
-        self.conv2_E = nn.Conv2d(resnet_E.fc.in_features,16, kernel_size=5, stride=2)
-
-        #DECODER
-
-        self.conv1_D = nn.Conv2d(16, 128, kernel_size=5, stride=2)
-        self.act_D = nn.ReLU()
-        resnet_D = models.resnet18(pretrained=True)
-        modules_D = list(resnet_D.children())[:-1]
-        self.resnet_D = nn.Sequential(*modules_D)
-        self.conv2_D = nn.Conv2d(resnet_D.fc.in_features, 64, kernel_size=5, stride=2)
-        self.act2_D = nn.ReLU()
-        self.conv3_D = nn.Conv2d(64, 1, kernel_size=5, stride=2)
-        
-
-    def decode(self, x):
-        x = self.conv1_D(x)
-        x = self.act_D(x)
-        for i in range(6):
-            x = self.resnet_D(x)
-        x = self.conv2_D(x)
-        x = self.act2_D(x)
-        x = self.conv3_D(x)
-        x = resnet_D(x)
-        return x
-        
-    def encode(self, x):
-        for i in range(1):
-            x = self.conv1_E(x)
-            x = self.act_E(x)
-        for i in range(6):
-            x = self.resnet_E(x)
-        x = self.conv2_E(x)
-        x = self.resnet_E(x)
-        return x
-
-    def forward(self, z):
-        z = self.encode(z)
-        z = self.decode(z)
-        return z
-
-class decoder(nn.Module):
-    def __init__():
-        super(decoder, self).__init__()
-        pass
+        self.model = nn.Sequential(*model)
 
     def forward(self, x):
-        pass
+        return self.model(x)
+
+class Encoder(nn.Module):
+    def __init__(self, input_nc, output_nc, resblocks=6):
+        super(Encoder, self).__init__()
+        
+        model = [nn.Conv2d(input_nc, 64, kernel_size=3, stride=3, padding=3),
+                nn.ReLU(inplace=False),
+                nn.MaxPool2d(2, stride=2),]
+        
+        in_features = 64
+        out_features = in_features*2
+
+        for i in range(resblocks):
+            model += [Residual_block(in_features)]
+
+        model += [nn.Conv2d(in_features, 8, kernel_size=3, stride=2, padding=1),
+                nn.ReLU(inplace=False),
+                nn.MaxPool2d(2, stride=1)]
+        
+        self.model = nn.Sequential(*model)
+
+    def forward(self, x):
+        torch.autograd.set_detect_anomaly(True)
+        return self.model(x)
+
+
+class Decoder(nn.Module):
+    def __init__(self, input_nc, output_nc, resblocks=6):
+        super(Decoder, self).__init__()
+
+        in_features = 64
+        out_features = in_features*2
+        model = [nn.ConvTranspose2d(8, in_features, kernel_size=3, stride=2 ),
+                nn.ReLU(inplace=False)]
+
+        for _ in range(resblocks):
+            model += [Residual_block(in_features)]
+
+        model += [nn.ConvTranspose2d(in_features, 8, kernel_size=5, stride=3, padding=1),
+                nn.ReLU(inplace=False),
+                nn.ConvTranspose2d(8, output_nc, kernel_size=2, stride=2, padding=1),
+                nn.Tanh()]
+
+        self.model = nn.Sequential(*model)
+
+    def forward(self, x):
+        torch.autograd.set_detect_anomaly(True)
+        return self.model(x)
+
+
+if __name__ == "__main__":
+    D = Decoder(3,3)
+    E = Encoder(3,3)
+    print(D,E)
+

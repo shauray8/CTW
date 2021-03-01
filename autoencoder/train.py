@@ -1,43 +1,67 @@
 import torch
+import torch.nn as nn
+from tqdm import trange
 import torchvision
 from torchvision import transforms, datasets, models
-from model import encoder, decoder
+import torch.optim as optim
+from model import Encoder, Decoder
+import matplotlib.pyplot as plt
+
+EPOCH = 50
+input_nc = 1
+output_nc = 1
+batch_size= 64
 
 transform = transforms.Compose([
-        transforms.RandomSizedCrop(224),
+        #transforms.RandomSizedCrop(224),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5,0.5,0.5],
-                             std=[0.5, 0.5, 0.5])
+        transforms.Normalize(mean=[0.5],
+                             std=[0.5])
 ])
 
 dataset = datasets.MNIST(root='./data',transform=transform, download=True)
 dataset_loader = torch.utils.data.DataLoader(dataset,
                                              batch_size=batch_size, shuffle=True,)
 
-EPOCH = 50
-input_nc = 3
-batch_size= 64
-
-enc = encoder()
-dec = decoder()
-
-optimizer = optim.Adam(net.parameters())
-loss_function = nn.MSELoss()
-
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+enc = Encoder(input_nc, output_nc).to(device)
+dec = Decoder(input_nc, output_nc).to(device)
+
+enc_optimize = optim.Adam(enc.parameters())
+dec_optimize = optim.Adam(dec.parameters())
+
+loss_functionE = nn.MSELoss()
+loss_functionD = nn.MSELoss()
+
+losses = []
 def train():
-    for epoch in (i := range(EPOCH)):
+    for epoch in (i := trange(EPOCH)):
         for id, (images,_) in enumerate(dataset_loader):
             x = images.to(device)
-            x_output = net(x)
-            loss = loss_function(x_output,x.data)
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            break
-        i.set_description(f'epoch [{epoch + 1}/{epochs}], loss:{loss.item():.4f}')
-        break
+            ##### training the Encoder #####
+            
+            E2E_output = enc(x)
+            #D2E_output = dec(E2E_output)
+            #loss_E = loss_functionE(D2E_output,x)
+            #enc_optimize.zero_grad()
+            #loss_E.backward(retain_graph=True)
+            #enc_optimize.step()
+
+            ##### training the Decoder #####
+
+            D2D_output = dec(E2E_output)
+            loss_D = loss_functionD(D2D_output, x)
+            dec_optimize.zero_grad()
+            loss_D.backward()
+            dec_optimize.step()
+            losses.append(loss_D.item())
+            i.set_description(f'epoch [{epoch + 1}/{EPOCH}], loss:{loss_D.item():.4f}')
+
+        torch.save(dec.state_dict(), 'pretrained/dec.pth')
+        torch.save(enc.state_dict(), 'pretrained/enc.pth')
+        plt.plot(losses)
+        plt.show()
 
 train()
