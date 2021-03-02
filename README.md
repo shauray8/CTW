@@ -1,5 +1,8 @@
 # Context Tree Weighting
 investigating and exploring context-tree weighting
+*Explaining CTW is a little tough *
+
+btw here's the code for [CTW](/ctw) ! 
 
 # Huffman Coding just to create a baseline
 
@@ -25,6 +28,10 @@ GZIP | 26780
 HUFFMAN | 53967
 7ZIP | 23806
 
+### results for compression with AutoEncoder
+*assume that there is a table of results here*
+
+here is the code for [AutoEncoder](/autoencoder) and the [PreTrained Model](/autoencoder/pretrained)
 
 ### Applications
 ---
@@ -41,8 +48,3 @@ The Barf Thingy can be found [here](http://mattmahoney.net/dc/barf.html).
 * [The context-tree weighting method: basic properties](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.352&rep=rep1&type=pdf)
 * [Context Tree Switching](https://arxiv.org/pdf/1111.3182.pdf)
 
-### TO DO
-* try autoencoder
-* write CTW
-* add applications
-* explore BARF
