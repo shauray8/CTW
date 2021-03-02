@@ -1,5 +1,5 @@
-# enwiktest: 1000000
-# gzip: 356274
+# enwik4: 10000
+# gzip: 3562
 
 import sys
 import math
@@ -73,13 +73,9 @@ class CTW(object):
 
     def log_prob(self, s):
         pn = self.root.find(self.prevx, True)
-        print("from log_prob",pn)
         prev = pn.pw
-        print("from pn.pw", prev)
         pn.update(s)
-        print("after update", pn)
         after_s = pn.pw
-        print("sfter",after_s)
         pn.update(s, True)
         return after_s - prev
 
@@ -133,13 +129,11 @@ def run(fn = "../enwik4"):
             p_s = []
             for s in range(SYMBOLS):
                 p_s.append(math.exp(ctw.log_prob(s)))
-                print("list",p_s)
             assert(sum(p_s)-1.0) < 1e-6
             
             x = next(bg)
             enc.code(p_s[0],x)
             steam.append(x)
-            print("steam",steam)
             H += -math.log2(p_s[x])
             ctw.update(x)
 
