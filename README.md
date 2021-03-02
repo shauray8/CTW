@@ -1,6 +1,8 @@
 # Context Tree Weighting
 Investigating and exploring context-tree weighting
+
 *Explaining CTW is a little tough*
+[ppt](https://docs.google.com/presentation/d/1tnYMo08lWsNUUokcjIjjhkn97guwpLnifMzcUaRDQMo/edit?usp=sharing)
 
 btw here's the code for [CTW](/CTW) ! 
 
