@@ -1,10 +1,10 @@
 # Context Tree Weighting
-investigating and exploring context-tree weighting
-*Explaining CTW is a little tough *
+Investigating and exploring context-tree weighting
+*Explaining CTW is a little tough*
 
-btw here's the code for [CTW](/ctw) ! 
+btw here's the code for [CTW](/CTW) ! 
 
-# Huffman Coding just to create a baseline
+## Huffman Coding just to create a baseline
 
 ### An example of how huffman coding works 
 
@@ -27,6 +27,9 @@ ORIGINAL | 100326
 GZIP | 26780
 HUFFMAN | 53967
 7ZIP | 23806
+
+## AutoEncoder (for image compression)
+*Assume that there is an explaination for autoencoder here*
 
 ### results for compression with AutoEncoder
 *assume that there is a table of results here*
