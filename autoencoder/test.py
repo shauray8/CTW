@@ -29,7 +29,7 @@ for i,(image, _) in enumerate(dataset_loader):
     encoded = encoded.view(96,1,4,8)
     save_image(image, "output/A_orig.png")
     save_image(encoded, "output/A_encoded.png")
-    save_image(decoded, "output/A_decoded.png")
+    save_image(decoded, "output/A_decoded100.png")
     break
     
 
