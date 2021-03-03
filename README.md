@@ -40,7 +40,7 @@ here is the code for [AutoEncoder](/autoencoder) and the [PreTrained Model](/aut
 
 ### Applications
 ---
-Using compression tool to study mammalian evolution and construct the phylogeny of the SARS virus can be found here(https://docs.google.com/presentation/d/1LUbo-6mLpYTwcELOLlRR4ohku9j2kCiQj_2sYPh0uWA/edit#slide=id.p).
+[Using compression tool to study mammalian evolution and construct the phylogeny of the SARS virus can be found here](https://docs.google.com/presentation/d/1LUbo-6mLpYTwcELOLlRR4ohku9j2kCiQj_2sYPh0uWA/edit#slide=id.p).
 
 ### BARF this thing compresses your data to less than 1 byte (i don't know how)
 ---
