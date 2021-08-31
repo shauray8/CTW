@@ -53,3 +53,7 @@ The Barf Thingy can be found [here](http://mattmahoney.net/dc/barf.html).
 * [The context-tree weighting method: basic properties](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.352&rep=rep1&type=pdf)
 * [Context Tree Switching](https://arxiv.org/pdf/1111.3182.pdf)
 
+### TODO
+* Hutter prize
+* improve the compression 
+
