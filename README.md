@@ -12,7 +12,7 @@ btw here's the code for [CTW](/CTW) !
 
 Characters | ASCII | Frequency | HUFFMAN | bits
 -----------|-------|-----------|---------|-----
-'A' | 65 | 1 | 00 | 01000001 
+'A' | 065 | 1 | 00 | 01000001 
 'g' | 103 | 1 | 01 | 01100111 
 'i' | 108 | 1 | 11 | 01101100 
 'o' | 111 | 1 | 10 | 01101111 
@@ -56,4 +56,11 @@ The Barf Thingy can be found [here](http://mattmahoney.net/dc/barf.html).
 ### TODO
 * Hutter prize
 * improve the compression 
+* manupulate the huffman thing for the project !
+
+
+### Huffman TODO
+* read the compression part
+* decompress does not work maybe 
+* make it visual with some python lib
 
