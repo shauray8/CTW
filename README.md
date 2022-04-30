@@ -26,9 +26,9 @@ And here's the code for Huffman Coding [compressor and decompressor](/huffman)
 algorithms | size(bytes)
 -----------|-------------
 ORIGINAL | 100326
-GZIP(uses LZ77 and LZ78) | 26780
+GZIP (LZ77 and LZ78) | 26780
 HUFFMAN | 53967
-7ZIP | 23806
+7ZIP (LZMA and LZMA2) | 23806
 
 ## AutoEncoder (for image compression)
 *Assume that there is an explaination for autoencoder here*
