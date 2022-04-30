@@ -26,7 +26,7 @@ And here's the code for Huffman Coding [compressor and decompressor](/huffman)
 algorithms | size(bytes)
 -----------|-------------
 ORIGINAL | 100326
-GZIP | 26780
+GZIP(uses LZ77 and LZ78) | 26780
 HUFFMAN | 53967
 7ZIP | 23806
 
