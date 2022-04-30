@@ -25,7 +25,7 @@ And here's the code for Huffman Coding [compressor and decompressor](/huffman)
 ### Results for the compression are 
 algorithms | size(bytes)
 -----------|-------------
-ORIGINAL | 100326
+ORIGINAL (ENWIK 4) | 100326
 GZIP (LZ77 and LZ78) | 26780
 HUFFMAN | 53967
 7ZIP (LZMA and LZMA2) | 23806
