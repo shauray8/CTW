@@ -48,17 +48,22 @@ if __name__ == "__main__":
     with open(sys.argv[1],'r') as f:
         data = f.read()
     
+    ## Counts the freq of every element in the file ##
     freq = collections.Counter(data)
+    print("Freq",freq)
     
     q = PriorityQueue()
+    print("before",q.qsize())
     for k,v in freq.items():
         n = Node(k, v)
         q.put((n.freq, n))
+    print("after",q.qsize())
     
     
     while q.qsize() > 1:
         left = q.get()[1]
         right = q.get()[1]
+        print(f"left {left}, right {right}")
         new_node = Node('',left.freq + right.freq, left, right)
         q.put((new_node.freq, new_node))
     
@@ -85,6 +90,6 @@ if __name__ == "__main__":
         b.append(int(byte,2))
     print(len(b))
     
-    with open("huffman_compressed_file","wb") as out:
-        pickle.dump((freq, b), out)
+   # with open("huffman_compressed_file.HUFF","wb") as out:
+   #     pickle.dump((freq, b), out)
     

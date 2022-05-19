@@ -1,11 +1,15 @@
 import os
+import sys
 import pickle
 from queue import PriorityQueue
 from compress import Node
 from operator import attrgetter
 
-with open("huffman_compressed_file",'rb') as f:
+with open(sys.argv[1],'rb') as f:
     data = pickle.load(f)
+
+#with open("huffman_compressed_file",'rb') as f:
+#    data = pickle.load(f)
     
 frequency, bytes = data
 
