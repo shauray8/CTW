@@ -57,6 +57,7 @@ The Barf Thingy can be found [here](http://mattmahoney.net/dc/barf.html).
 * Hutter prize
 * improve the compression 
 * manupulate the huffman thing for the project !
+* Audio compression
 
 
 ### Huffman TODO
